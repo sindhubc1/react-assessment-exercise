@@ -1,53 +1,56 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import { addToCart } from '../actions/cartActions'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { addToCart } from "../actions/cartActions";
 
- class Home extends Component{
-    
-    handleClick = (id)=>{
-        this.props.addToCart(id); 
-    }
+//Main Dashboard/Home page to view all products and other components(Header & Footer)
 
-    render(){
-        let itemList = this.props.items.map(item=>{
-            return(
-                <div className="card" key={item.id}>
-                        <div className="card-image">
-                            <img src={item.img} alt={item.title}/>
-                            <span className="card-title">{item.title}</span>
-                           
-                        </div>
+class Home extends Component {
+  handleClick = (id) => {
+    this.props.addToCart(id);
+  };
 
-                        <div className="card-content">
-                            <p>{item.desc}</p>
-                            <p><b>Price: {item.price}$</b></p>
-                            <span to="/" className="btn-floating halfway-fab waves-effect waves-light red" onClick={()=>{this.handleClick(item.id)}}><i className="material-icons">Add to Cart</i></span>
-                        </div>
-                 </div>
+  render() {
+    let itemList = this.props.items.map((item) => {
+      return (
+        <div className="col-md-4" key={item.id}>
+          <div className="thumbnail text-center">
+            <a href={`#${item.id}`} onClick={(e) => this.handleClick(item.id)}>
+              <img src={item.img} alt={item.title} />
+              <p>{item.title}</p>
+            </a>
+            <p>{item.desc}</p>
+            <p>
+              <b>Price: {item.price}$</b>
+            </p>
+            <button
+              className="btn btn-primary"
+              onClick={(e) => this.handleClick(item.id)}
+            >
+              Add to cart
+            </button>
+          </div>
+        </div>
+      );
+    });
 
-            )
-        })
-
-        return(
-            <div className="container">
-                <h3 className="center">Our items</h3>
-                <div className="box">
-                    {itemList}
-                </div>
-            </div>
-        )
-    }
-}
-const mapStateToProps = (state)=>{
-    return {
-      items: state.items
-    }
+    return (
+      <div className="container">
+        <div className="box">{itemList}</div>
+      </div>
+    );
   }
-const mapDispatchToProps= (dispatch)=>{
-    
-    return{
-        addToCart: (id)=>{dispatch(addToCart(id))}
-    }
 }
+const mapStateToProps = (state) => {
+  return {
+    items: state.items,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addToCart: (id) => {
+      dispatch(addToCart(id));
+    },
+  };
+};
 
-export default connect(mapStateToProps,mapDispatchToProps)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
